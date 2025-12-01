@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Connor Hendren / 002
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -105,6 +105,31 @@ public class Graph {
   public int findRoot() {
 
     // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME/SECTION AT TOP OF FILE
-    return -1;
+
+    //Make an array for the number of vertices
+    int[] intDegree = new int[numVertices];
+    //Count the incoming edges
+    for(int src = 0; src < numVertices; src++) {
+      for(int dest : adjListArr[src]) {
+        intDegree[dest]++;
+      }
+    }
+    //Initialize an int for the root index
+    //Return this int if invalid
+    int rootIndex = -1;
+    for(int i = 0; i < numVertices; i++) {
+      if(intDegree[i] == 0) {
+        if(rootIndex != -1) {
+          return -1;
+        }
+        rootIndex = i;
+      }
+    }
+    //If no root is found, also return -1
+    if(rootIndex == -1) {
+      return -1;
+    }
+    //Otherwise return the value stored at that vertex
+    return vertexValues.get(rootIndex);
   } 
 }
