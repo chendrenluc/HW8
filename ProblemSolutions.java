@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   ADD YOUR NAME / SECTION NUMBER HERE
+ *   Connor Hendren / 002
  *
  *   This java file contains the problem solutions of canFinish and
  *   numGroups methods.
@@ -82,7 +82,32 @@ class ProblemSolutions {
                                         prerequisites); 
 
         // ADD YOUR CODE HERE - ADD YOUR NAME / SECTION AT TOP OF FILE
-        return false;
+        //Build an indegree array
+        for(int i = 0; i < numExams; i++) {
+            for(int neighbor : adj[i]) {
+                indegree[neighbor]++;
+            }
+        }
+        //Make a queue for the nodes that have indegree 0
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i < numExams; i++) {
+            indegree[neighbor]--;
+            if(indegree[neighbor] == 0) q.add(neighbor);
+        }
+        //Make a count for the queue
+        //Iterate through to process the exams
+        int count = 0;
+        while(!q.isEmpty()) {
+            int node = q.poll();
+            count++;
+            for(int neighbor : adj[node]) {
+                indegree[neighbor]--;
+                if(indegree[neighbor] == 0) q.add(neighbor);
+            }
+        }
+        //If everything was processed then the schedule should be labeled as "possible"
+        //Return the boolean comparison of the count that was made earlier and the number of exams
+        return count == numExams;
 
     }
 
@@ -192,7 +217,35 @@ class ProblemSolutions {
 
         // YOUR CODE GOES HERE - you can add helper methods, you do not need
         // to put all code in this method.
-        return -1;
-    }
 
+        //Should make something to track the nodes visited
+        //Maybe something to count the groups can go here as well, comment out if not used
+        boolean[] visited = new boolean[numNodes];
+        int groups = 0;
+        //Traverse each node
+        for(i = 0; i < numNodes; i++) {
+            if(!visited[i]) {
+                groups++;
+                dfs(graph, visited, i);
+            }
+        }
+        //Use the group counter here to return
+        return groups;
+    }
+    //Helper method to do a dfs
+    private void dfs(Map<Integer, List<Integer>> graph, boolean[] visited, int node) {
+        //Mark visited as true
+        visited[node] = true;
+        //If it's an isolated node then return
+        if(!graph.containsKey(node)) {
+            return;
+        }
+        //Otherwise; iterate and perform the search
+        for(int neighbor : graph.get(node)) {
+            if(!visited[neighbor]) {
+                //Recusion call to keep performing search
+                dfs(graph, visited, neighbor);
+            }
+        }
+    }
 }
