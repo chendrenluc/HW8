@@ -72,17 +72,19 @@ class ProblemSolutions {
      * @return boolean          - True if all exams can be taken, else false.
      */
 
-    public boolean canFinish(int numExams, 
+    public boolean canFinish(int numExams,
                              int[][] prerequisites) {
-      
+
         int numNodes = numExams;  // # of nodes in graph
 
         // Build directed graph's adjacency list
-        ArrayList<Integer>[] adj = getAdjList(numExams, 
-                                        prerequisites); 
+        ArrayList<Integer>[] adj = getAdjList(numExams,
+                prerequisites);
 
         // ADD YOUR CODE HERE - ADD YOUR NAME / SECTION AT TOP OF FILE
+
         //Build an indegree array
+        int[] indegree = new int[numExams];
         for(int i = 0; i < numExams; i++) {
             for(int neighbor : adj[i]) {
                 indegree[neighbor]++;
@@ -91,8 +93,7 @@ class ProblemSolutions {
         //Make a queue for the nodes that have indegree 0
         Queue<Integer> q = new LinkedList<>();
         for(int i = 0; i < numExams; i++) {
-            indegree[neighbor]--;
-            if(indegree[neighbor] == 0) q.add(neighbor);
+            if(indegree[i] == 0) q.add(i);
         }
         //Make a count for the queue
         //Iterate through to process the exams
@@ -126,8 +127,8 @@ class ProblemSolutions {
     private ArrayList<Integer>[] getAdjList(
             int numNodes, int[][] edges) {
 
-        ArrayList<Integer>[] adj 
-                    = new ArrayList[numNodes];      // Create an array of ArrayList ADT
+        ArrayList<Integer>[] adj
+                = new ArrayList[numNodes];      // Create an array of ArrayList ADT
 
         for (int node = 0; node < numNodes; node++){
             adj[node] = new ArrayList<Integer>();   // Allocate empty ArrayList per node
